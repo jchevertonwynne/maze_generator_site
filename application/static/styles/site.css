@@ -1,0 +1,13 @@
+body {
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.navbar {
+    background-color: green;
+    overflow: hidden;
+}
+
+.navbar button {
+    margin: 5px;
+}
