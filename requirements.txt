@@ -1,3 +1,4 @@
 pillow
 flask
-wtflask
+wtforms
+flask-wtf
