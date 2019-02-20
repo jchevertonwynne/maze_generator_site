@@ -12,8 +12,8 @@ DATABASE_NAME = "mazes.db"
 MAZES_FOLDER = "static/maze_files"
 
 DEFAULT_MAZE_CREATOR = "joseph"
-DEFAULT_MAZE_WIDTH = 400
-DEFAULT_MAZE_HEIGHT = 400
+DEFAULT_MAZE_WIDTH = 100
+DEFAULT_MAZE_HEIGHT = 100
 
 
 Record = namedtuple("Record", ["id", "date", "creator"])
@@ -56,7 +56,7 @@ def get_latest_maze():
     with sqlite3.connect(DATABASE_NAME) as db:
         cursor = db.cursor()
         maze_info = cursor.execute(
-            "SELECT * FROM mazes ORDER BY id LIMIT 1;").fetchone()
+            "SELECT * FROM mazes ORDER BY id DESC LIMIT 1;").fetchone()
         return Record(*maze_info)
 
 

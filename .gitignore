@@ -1,3 +1,5 @@
 *.pyc
 .vscode
 secret.py
+application/static/maze_files/*.png
+application/mazes.db
