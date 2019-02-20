@@ -70,11 +70,6 @@ def build_maze(form_fields):
     height = form_fields.height.data
     creator = form_fields.creator.data
 
-    print()
-    print(f"width: {width}")
-    print(f"height: {height}")
-    print()
-
     maze_id = database.new_entry(creator)
     user_maze = Maze(width, height)
     user_maze.output_maze(maze_id)
