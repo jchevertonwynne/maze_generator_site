@@ -4,7 +4,9 @@
     <p>Viewing all mazes</p>
 
     {% for maze in mazes %}
-        {% include 'fragments/mazeview.html' %}
-        <a href="mazes/{{maze.id}}">Permalink</a>
+        <div class="mazeListItem">
+            {% include 'fragments/mazeview.html' %}
+            <a href="mazes/{{maze.id}}">Permalink</a>
+        </div>
     {% endfor %}
 {% endblock %}

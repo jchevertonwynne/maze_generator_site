@@ -32,8 +32,9 @@ body {
     background-color: orange;
 }
 
-a {
+a, a:visited {
     text-decoration: none;
+    color: green;   
 }
 
 .nabar a:hover {
