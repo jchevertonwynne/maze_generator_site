@@ -14,6 +14,14 @@ Record = namedtuple("Record", ["id", "date", "creator"])
 class MazeDatabase:
     def __init__(self, database_name):
         self.database_name = database_name
+    
+
+    def setup_tables(self):
+        with sqlite3.connect(self.database_name) as db:
+            cursor = db.cursor()
+            cursor.execute("CREATE TABLE mazes (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
+                        "date DATETIME DEFAULT CURRENT_TIMESTAMP, creator TEXT);")
+
 
     def get_maze(self, id):
         with sqlite3.connect(self.database_name) as db:

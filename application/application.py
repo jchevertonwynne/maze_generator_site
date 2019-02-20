@@ -78,12 +78,7 @@ def build_maze(form_fields):
     maze_id = database.new_entry(creator)
     user_maze = Maze(width, height)
     user_maze.output_maze(maze_id)
-    return redirect(f'/mazes/{maze_id}')
-
-
-def check_default_maze():
-    if not database.mazes_exist():
-        setup_database()
+    return redirect(f'/mazes/{maze_id}')   
 
 
 def cleanup_maze_storage():
@@ -98,13 +93,14 @@ def cleanup_maze_storage():
 
 def setup_database():
     cleanup_maze_storage()
+    database.setup_tables()
     maze_id = database.new_entry(DEFAULT_MAZE_CREATOR)
     default = Maze(DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_HEIGHT)
     default.output_maze(maze_id)
 
 
 if __name__ == "__main__":
-    check_default_maze()
+    setup_database()
 
     if len(sys.argv) > 1:
         app.run(host="0.0.0.0", port=80)
