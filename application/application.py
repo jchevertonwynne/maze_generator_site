@@ -2,8 +2,10 @@
 
 from flask import Flask, make_response, render_template, redirect, request
 import os
+import shutil
+import sys
 
-import database
+from database import MazeDatabase
 from forms import MazeRequestForm
 from maze_generator import Maze
 from secret import secret
@@ -11,6 +13,17 @@ from secret import secret
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret
+
+
+DEFAULT_MAZE_CREATOR = "joseph"
+DEFAULT_MAZE_WIDTH = 100
+DEFAULT_MAZE_HEIGHT = 100
+
+DATABASE_NAME = "mazes.db"
+MAZES_FOLDER = "static/maze_files"
+
+
+database = MazeDatabase(DATABASE_NAME)
 
 
 @app.route('/')
@@ -57,11 +70,43 @@ def build_maze(form_fields):
     height = form_fields.height.data
     creator = form_fields.creator.data
 
+    print()
+    print(f"width: {width}")
+    print(f"height: {height}")
+    print()
+
     maze_id = database.new_entry(creator)
     user_maze = Maze(width, height)
     user_maze.output_maze(maze_id)
     return redirect(f'/mazes/{maze_id}')
 
 
+def check_default_maze():
+    if not database.mazes_exist():
+        setup_database()
+
+
+def cleanup_maze_storage():
+    if os.path.isfile(DATABASE_NAME):
+        os.remove(DATABASE_NAME)
+
+    if os.path.isdir(MAZES_FOLDER):
+        shutil.rmtree(MAZES_FOLDER)
+
+    os.makedirs(MAZES_FOLDER)
+
+
+def setup_database():
+    cleanup_maze_storage()
+    maze_id = database.new_entry(DEFAULT_MAZE_CREATOR)
+    default = Maze(DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_HEIGHT)
+    default.output_maze(maze_id)
+
+
 if __name__ == "__main__":
-    app.run()
+    check_default_maze()
+
+    if len(sys.argv) > 1:
+        app.run(host="0.0.0.0", port=80)
+    else:
+        app.run()
