@@ -1,12 +1,12 @@
 #!/usr/local/bin/python3
 
-from flask import Flask, render_template, redirect, make_response, request
+from flask import Flask, make_response, render_template, redirect, request
 import os
 
-from forms import MazeRequestForm
-from secret import secret
-from maze_generator import Maze
 import database
+from forms import MazeRequestForm
+from maze_generator import Maze
+from secret import secret
 
 
 app = Flask(__name__)
@@ -20,6 +20,7 @@ def home_page():
     response = make_response(render_template('homepage.html', title="Generate a maze", maze=last_maze, issue=issue))
     response.set_cookie('issue', '', expires=0)
     return response
+
 
 @app.route('/generate_maze', methods=['GET', 'POST'])
 def generate_maze():
@@ -44,6 +45,11 @@ def view_maze(maze_id):
         response = make_response(redirect('/'))
         response.set_cookie('issue', f"Maze with Id {maze_id} could not be found")
         return response
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('error.html'), 404
 
 
 def build_maze(form_fields):

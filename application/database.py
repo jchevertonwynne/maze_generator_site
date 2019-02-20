@@ -1,9 +1,9 @@
 #!/usr/local/bin/python3
 
-import sqlite3
+from collections import namedtuple
 import os
 import shutil
-from collections import namedtuple
+import sqlite3
 
 from maze_generator import Maze
 

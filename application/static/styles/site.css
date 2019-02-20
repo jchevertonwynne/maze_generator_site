@@ -18,11 +18,15 @@ body {
     display: flex;
 }
 
-.navbar li {
-    font-size: 1.4em;
+.navbar a {
+    width: 25%;
     margin: 5px;
     padding: 0px 5px 0px 5px;
-    width: 25%;
+}
+
+.navbar li {
+    font-size: 1.4em;
+    width: 100%;
     text-align: center;
     list-style-type: none;
     background-color: orange;
@@ -32,7 +36,7 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+.nabar a:hover {
     color: white;
 }
 

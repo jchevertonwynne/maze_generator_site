@@ -7,9 +7,7 @@
         </div>
     {% endif %}
 
-    <div class="maze">
-        <p>Latest Maze, made by {{maze.creator}} at {{maze.date}} </p>
-
-        <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
-    </div>
+    <p> Latest maze: </p>
+    
+    {% include 'fragments/mazeview.html' %}
 {% endblock %}

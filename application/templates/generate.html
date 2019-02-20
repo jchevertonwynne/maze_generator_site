@@ -6,15 +6,24 @@
         {{ form.hidden_tag() }}
         <p>
             {{ form.width.label }}<br>
-            {{ form.width(size=4) }}
+            {{ form.width(size=4) }}<br>
+            {% for error in form.width.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.height.label }}<br>
-            {{ form.height(size=4) }}
+            {{ form.height(size=4) }}<br>
+            {% for error in form.height.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.creator.label }}<br>
-            {{ form.creator(size=20) }}
+            {{ form.creator(size=20) }}<br>
+            {% for error in form.creator.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>{{ form.submit() }}</p>
     </form>

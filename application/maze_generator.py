@@ -2,6 +2,10 @@ from PIL import Image, ImageDraw
 import random
 
 
+WHITE = (255, 255, 255)
+BLACK = (0, 0 , 0)
+
+
 class Tile:
     """Simple tile class that stores its wall state and its position on board
     north and east walls. only 2 required for defining all walls in a maze
@@ -91,11 +95,10 @@ class Maze:
     
 
     def save_maze(self, name):
-        wallCol = (0, 0, 0)
         maze = Image.new(
             "RGB", 
             (self.width * 2 + 1, self.height * 2 + 1), 
-            (255, 255, 255)
+            WHITE
         )
         draw = ImageDraw.Draw(maze)
 
@@ -105,7 +108,7 @@ class Maze:
             (self.height * 2),
             ((self.width - 1) * 2), 
             (self.height * 2)),
-            fill=wallCol,
+            fill=BLACK,
             width=1,
         )
 
@@ -115,7 +118,7 @@ class Maze:
             0, 
             0, 
             self.height * 2), 
-            fill=wallCol, 
+            fill=BLACK, 
             width=1
         )
 
@@ -128,7 +131,7 @@ class Maze:
                         (y * 2),
                         (x * 2) + 2,
                         (y * 2)), 
-                        fill=wallCol, 
+                        fill=BLACK, 
                         width=1
                     )
                 if item.right:
@@ -137,7 +140,7 @@ class Maze:
                         (y * 2),
                         (x * 2) + 2,
                         (y * 2) + 2),
-                        fill=wallCol,
+                        fill=BLACK,
                         width=1,
                     )
 

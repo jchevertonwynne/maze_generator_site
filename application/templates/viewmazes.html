@@ -4,10 +4,7 @@
     <p>Viewing all mazes</p>
 
     {% for maze in mazes %}
-        <div class="maze">
-            <p>Made by {{maze.creator}} at {{maze.date}}</p>
-
-            <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
-        </div>
+        {% include 'fragments/mazeview.html' %}
+        <a href="mazes/{{maze.id}}">Permalink</a>
     {% endfor %}
 {% endblock %}
