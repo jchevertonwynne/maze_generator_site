@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Customise Maze</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.width.label }}<br>
+            {{ form.width(size=4) }}
+        </p>
+        <p>
+            {{ form.height.label }}<br>
+            {{ form.height(size=4) }}
+        </p>
+        <p>
+            {{ form.creator.label }}<br>
+            {{ form.creator(size=20) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

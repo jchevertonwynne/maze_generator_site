@@ -1,0 +1,10 @@
+<html>
+    {% include 'fragments/header.html' %}
+
+    <body>
+        {% include 'fragments/navbar.html' %}
+        <div class='mainContent'>
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

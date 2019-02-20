@@ -1,3 +1,13 @@
-{% include 'fragments/header.html' %}
-<p>i am viewing all mazes</p>
-{% include 'fragments/footer.html' %}
+{% extends "base.html" %}
+
+{% block content %}
+    <p>Viewing all mazes</p>
+
+    {% for maze in mazes %}
+        <div class="maze">
+            <p>Made by {{maze.creator}} at {{maze.date}}</p>
+
+            <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
+        </div>
+    {% endfor %}
+{% endblock %}

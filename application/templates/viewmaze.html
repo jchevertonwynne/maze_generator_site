@@ -1,3 +1,9 @@
-{% include 'fragmentsheader.html' %}
-<p>i am viewwing a maze</p>
-{% include 'fragments/footer.html' %}
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="maze">
+        <p>Maze made by {{maze.creator}} at {{maze.date}}</p>
+
+        <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
+    </div>
+{% endblock %}

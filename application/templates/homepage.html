@@ -1,3 +1,15 @@
-{% include 'fragments/header.html' %}
-<p>welome to the home page</p>
-{% include 'fragments/footer.html' %}
+{% extends "base.html" %}
+
+{% block content %}
+    {% if issue %}
+        <div class="issue">
+            <p> {{ issue }} </p>
+        </div>
+    {% endif %}
+
+    <div class="maze">
+        <p>Latest Maze, made by {{maze.creator}} at {{maze.date}} </p>
+
+        <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
+    </div>
+{% endblock %}

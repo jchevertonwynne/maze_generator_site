@@ -1,6 +1,10 @@
 body {
-    padding-left: 20%;
-    padding-right: 20%;
+    padding: 0% 20% 0% 20%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.mainContent {
+    width: 100%;
 }
 
 .navbar {
@@ -8,6 +12,41 @@ body {
     overflow: hidden;
 }
 
-.navbar button {
+.navbar ul {
+    padding: 0;
     margin: 5px;
+    display: flex;
+}
+
+.navbar li {
+    font-size: 1.4em;
+    margin: 5px;
+    padding: 0px 5px 0px 5px;
+    width: 25%;
+    text-align: center;
+    list-style-type: none;
+    background-color: orange;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+}
+
+li:hover {
+    background-color: black;
+}
+
+#maze, img{
+    width: 100%;
+}
+
+.issue {
+    background-color: red;
+    color: gold;
+    padding: 10px;
+    margin-top: 10px;
 }
