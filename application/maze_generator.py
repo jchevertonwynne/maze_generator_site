@@ -27,6 +27,7 @@ class Maze:
         self.height = height
         self.assert_input_types()
         self._board = self.setup_board()
+        print(f"making maze with width {width} and height {height}")
     
 
     def output_maze(self, name):
