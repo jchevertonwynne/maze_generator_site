@@ -1,11 +1,7 @@
 #!/usr/local/bin/python3
 
 from collections import namedtuple
-import os
-import shutil
 import sqlite3
-
-from maze_generator import Maze
 
 
 Record = namedtuple("Record", ["id", "date", "creator"])
