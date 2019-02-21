@@ -4,7 +4,7 @@ Simple little maze maker + display site
 
 ## Install required modules
 
-`$ pip install -r requiremnts.txt`\
+`$ pip install -r requirements.txt`
 
 ## Make `secret.py`
 
