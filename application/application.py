@@ -22,7 +22,7 @@ DEFAULT_MAZE = MazeSpec(DEFAULT_MAZE_CREATOR, DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_H
 def main():
     app = setup_app(DATABASE_NAME, MAZES_FOLDER, DEFAULT_MAZE)
 
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 1 and sys.argv[1] == "-i":
         app.run(host="0.0.0.0", port=80)
     else:
         app.run()
