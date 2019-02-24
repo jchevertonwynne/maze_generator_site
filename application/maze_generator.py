@@ -1,6 +1,8 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from PIL import Image, ImageDraw
 from random import choice, randrange
+from typing import Tuple
 
 from colours import Colours, MazeColours
 
@@ -8,21 +10,22 @@ from colours import Colours, MazeColours
 default_colours = MazeColours(Colours.BLACK, Colours.WHITE)
 
 
+@dataclass
 class Tile:
     """Simple tile class that stores its wall state and its position on board
     north and east walls. only 2 required for defining all walls in a maze
     as one cell's top is another's bottom"""
 
-    def __init__(self, x, y):
-        self.top = self.right = True
-        self.pos = x, y
+    pos: Tuple[int, int]
+    top: bool = True
+    right: bool = True
+
+
+    def __hash__(self):
+        return hash(self.pos)
     
 
-    def __repr__(self):
-        return f"Tile{self.pos}"
-
-
-class Maze:
+class Maze(ABC):
     """A simple maze generator. Always starts in top left and ends in
     bottom right.
     name: The file name output. Do not include file extension.
@@ -62,7 +65,7 @@ class Maze:
 
 
     def setup_board(self):
-        board = [[Tile(x, y) for x in range(self.width)] 
+        board = [[Tile((x, y)) for x in range(self.width)] 
                              for y in range(self.height)]
         board[0][0].top = False
         return board
@@ -137,47 +140,72 @@ class Maze:
 
 class RecursiveBacktracker(Maze):
     def process_maze(self):
-            start = self._board[randrange(self.height)][randrange(self.width)]
-            stack = [start]
-            visited = {start}
-            adjacent_tiles = {start: self.get_adjacent_tiles(start)}
+        start = self._board[randrange(self.height)][randrange(self.width)]
+        stack = [start]
+        visited = {start}
+        adjacent_tiles = {start: self.get_adjacent_tiles(start)}
 
-            while stack:
-                curr_tile = stack[-1]
-                possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
-                                 if adjacent not in visited]
+        while stack:
+            curr_tile = stack[-1]
+            possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
+                                if adjacent not in visited]
 
-                if possible_next:
-                    next_tile = choice(possible_next)
-                    self.connect_cells(curr_tile, next_tile)
+            if possible_next:
+                next_tile = choice(possible_next)
+                self.connect_cells(curr_tile, next_tile)
 
-                    adjacent_tiles[next_tile] = self.get_adjacent_tiles(next_tile)
-                    visited.add(next_tile)
-                    stack.append(next_tile)
+                adjacent_tiles[next_tile] = self.get_adjacent_tiles(next_tile)
+                visited.add(next_tile)
+                stack.append(next_tile)
 
-                else:
-                    del stack[-1]
+            else:
+                del stack[-1]
 
 
 class ParallelOption(Maze):
     def process_maze(self):
-            start = self._board[randrange(self.height)][randrange(self.width)]
-            options = {start}
-            visited = {start}
-            adjacent_tiles = {start: self.get_adjacent_tiles(start)}
+        start = self._board[randrange(self.height)][randrange(self.width)]
+        options = {start}
+        visited = {start}
+        adjacent_tiles = {start: self.get_adjacent_tiles(start)}
 
-            while options:
-                curr_tile = choice(list(options))
-                possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
-                                if adjacent not in visited]
+        while options:
+            curr_tile = choice(list(options))
+            possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
+                            if adjacent not in visited]
 
-                if possible_next:
-                    next_tile = choice(list(possible_next))
-                    self.connect_cells(curr_tile, next_tile)
+            if possible_next:
+                next_tile = choice(list(possible_next))
+                self.connect_cells(curr_tile, next_tile)
 
-                    adjacent_tiles[next_tile] = self.get_adjacent_tiles(next_tile)
-                    options.add(next_tile)
-                    visited.add(next_tile)
+                adjacent_tiles[next_tile] = self.get_adjacent_tiles(next_tile)
+                options.add(next_tile)
+                visited.add(next_tile)
 
+            else:
+                options.remove(curr_tile)
+
+
+class Sidewinder(Maze):
+    def process_maze(self):
+        first_row = self._board[0]
+        for cell_a, cell_b in zip(first_row, first_row[1:]):
+            self.connect_cells(cell_a, cell_b)
+
+        for row in self._board[1:]:
+            ran = []
+
+            for curr_cell in row:
+                ran.append(curr_cell)
+                curr_x, curr_y = curr_cell.pos
+
+                if choice([True, False]) and curr_cell != row[-1]:
+                    next_cell = self._board[curr_y][curr_x + 1]
+                    self.connect_cells(curr_cell, next_cell)
                 else:
-                    options.remove(curr_tile)
+                    up_from_cell = choice(ran)
+                    up_x, up_y = up_from_cell.pos
+                    above_cell = self._board[up_y - 1][up_x]
+                    self.connect_cells(up_from_cell, above_cell)
+                    ran = []
+    
