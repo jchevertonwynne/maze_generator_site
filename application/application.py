@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3
 
-from collections import namedtuple
 import sys
 
+from common_utils import MazeSpec
 from routing import setup_app
 
 
@@ -15,7 +15,6 @@ DEFAULT_MAZE_WIDTH = 40
 DEFAULT_MAZE_HEIGHT = 40
 
 
-MazeSpec = namedtuple("MazeSpec", ["user", "width", "height"])
 DEFAULT_MAZE = MazeSpec(DEFAULT_MAZE_CREATOR, DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_HEIGHT)
 
 

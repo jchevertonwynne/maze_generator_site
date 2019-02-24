@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+Geenrate Maze
+{% endblock %}}
+
 {% block content %}
     <h1>Customise Maze</h1>
     <form action="" method="post" novalidate>
@@ -15,6 +19,27 @@
             {{ form.height.label }}<br>
             {{ form.height(size=4) }}<br>
             {% for error in form.height.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.maze_type.label }}<br>
+            {{ form.maze_type() }}<br>
+            {% for error in form.maze_type.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.wall_colour.label }}<br>
+            {{ form.wall_colour() }}<br>
+            {% for error in form.wall_colour.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.path_colour.label }}<br>
+            {{ form.path_colour() }}<br>
+            {% for error in form.path_colour.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>

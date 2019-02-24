@@ -2,9 +2,10 @@ from flask import Flask, make_response, render_template, redirect, request
 import os
 import shutil
 
-from database import MazeDatabase
+from colours import Colours, MazeColours
+from common_utils import MazeTypes
+from database import MazeDatabase, setup_database
 from forms import MazeRequestForm
-from maze_generator import Maze
 from secret import secret
 
 
@@ -12,29 +13,18 @@ def build_maze(form_fields, database):
     width = form_fields.width.data
     height = form_fields.height.data
     creator = form_fields.creator.data
+    maze_type = form_fields.maze_type.data
+    wall_colour = form_fields.wall_colour.data
+    path_colour = form_fields.path_colour.data
+    
+    maze_generation_type = MazeTypes[maze_type].value
+    maze_colours = MazeColours(Colours[wall_colour], Colours[path_colour])
 
     maze_id = database.new_entry(creator)
-    user_maze = Maze(width, height)
-    user_maze.output_maze(maze_id)
+    user_maze = maze_generation_type(width, height, maze_id, maze_colours)
+    user_maze.output_maze()
+
     return redirect(f'/mazes/{maze_id}')
-
-
-def cleanup_maze_storage(database_name, mazes_folder):
-    if os.path.isfile(database_name):
-        os.remove(database_name)
-
-    if os.path.isdir(mazes_folder):
-        shutil.rmtree(mazes_folder)
-
-    os.makedirs(mazes_folder)
-
-
-def setup_database(database, mazes_folder, default_maze):
-    cleanup_maze_storage(database.database_name, mazes_folder)
-    database.setup_tables()
-    maze_id = database.new_entry(default_maze.user)
-    default = Maze(default_maze.width, default_maze.height)
-    default.output_maze(maze_id)
 
 
 def setup_app(database_name, mazes_folder, default_maze):
@@ -47,7 +37,7 @@ def setup_app(database_name, mazes_folder, default_maze):
         last_maze = database.get_latest_maze()
         issue = request.cookies.get('issue')
         response = make_response(render_template(
-            'homepage.html', title="Generate a maze", maze=last_maze, issue=issue))
+            'homepage.html', maze=last_maze, issue=issue))
         response.set_cookie('issue', '', expires=0)
         return response
 
@@ -57,20 +47,20 @@ def setup_app(database_name, mazes_folder, default_maze):
         form = MazeRequestForm()
         if form.validate_on_submit():
             return build_maze(form, database)
-        return render_template('generate.html', title="Generate a maze", form=form)
+        return render_template('generate.html', form=form)
 
 
     @app.route('/mazes')
     def maze_list():
         mazes = database.get_all_mazes()
-        return render_template('viewmazes.html', title="View all mazes", mazes=mazes)
+        return render_template('viewmazes.html', mazes=mazes)
 
 
     @app.route('/mazes/<int:maze_id>')
     def view_maze(maze_id):
         try:
             maze = database.get_maze(maze_id)
-            return render_template('viewmaze.html', title=f"Viewing maze {maze.id}", maze=maze)
+            return render_template('viewmaze.html', maze=maze)
         except ValueError:
             response = make_response(redirect('/'))
             response.set_cookie(

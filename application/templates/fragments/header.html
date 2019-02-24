@@ -1,4 +1,7 @@
 <head>
-    <title>{{ title }}</title>
+    <title>
+        {% block title %} Maze Generator Site {% endblock %}
+    </title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/site.css')}}">
 </head>
