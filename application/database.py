@@ -1,11 +1,14 @@
 #!/usr/local/bin/python3
 
+from collections import namedtuple
 import os
 import shutil
 import sqlite3
 
-from common_utils import Record
 from maze_generator import RecursiveBacktracker
+
+
+Record = namedtuple("Record", ["id", "date", "creator"])
 
 
 def setup_database(database, mazes_folder, default_maze):

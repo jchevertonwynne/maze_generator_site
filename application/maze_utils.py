@@ -5,7 +5,6 @@ from maze_generator import RecursiveBacktracker, ParallelOption, Sidewinder
 
 
 MazeSpec = namedtuple("MazeSpec", ["user", "width", "height"])
-Record = namedtuple("Record", ["id", "date", "creator"])
 
 
 class MazeTypes(Enum):

@@ -1,5 +1,11 @@
 <html>
-    {% include 'fragments/header.html' %}
+    <head>
+        <title>
+            {% block title %} Maze Generator Site {% endblock %}
+        </title>
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/site.css')}}">
+    </head>
 
     <body>
         {% include 'fragments/navbar.html' %}

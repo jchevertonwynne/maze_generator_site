@@ -3,7 +3,7 @@ from wtforms import IntegerField, StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 from colours import Colours
-from common_utils import MazeTypes
+from maze_utils import MazeTypes
 
 
 colour_strings_display = [str(colour)[8:].capitalize() for colour in Colours]

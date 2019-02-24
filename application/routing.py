@@ -3,7 +3,7 @@ import os
 import shutil
 
 from colours import Colours, MazeColours
-from common_utils import MazeTypes
+from maze_utils import MazeTypes
 from database import MazeDatabase, setup_database
 from forms import MazeRequestForm
 from secret import secret

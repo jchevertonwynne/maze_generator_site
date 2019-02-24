@@ -2,7 +2,7 @@
 
 import sys
 
-from common_utils import MazeSpec
+from maze_utils import MazeSpec
 from routing import setup_app
 
 
