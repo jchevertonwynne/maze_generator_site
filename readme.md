@@ -12,16 +12,14 @@ Simple little maze maker + display site
 
 `secret = "YOUR_STRING_HERE>"`
 
-## Setup database
+## Check folder persmissions
 
-`$ cd application`
-
-`$ chmod +x database.py`
-
-`$ ./database.py`
+`application/static/maze_files` must be `read/write`
 
 ## Run application
 
-`$ chmod +x application.py`
+`$ python3 application.py`
 
-`$ ./application.py`
+Open to internet:
+
+`$ python3 application.py -i`
