@@ -12,10 +12,14 @@ Simple little maze maker + display site
 
 `secret = "YOUR_STRING_HERE>"`
 
+## check folder persmissions
+
+`application/static/maze_files` must be `read/write`
+
 ## Run application
 
-`$ sudo python3 application.py`
+`$ python3 application.py`
 
 Open to internet:
 
-`$ sudo python3 application.py -i`
+`$ python3 application.py -i`
