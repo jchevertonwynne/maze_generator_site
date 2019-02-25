@@ -12,7 +12,7 @@ Simple little maze maker + display site
 
 `secret = "YOUR_STRING_HERE>"`
 
-## check folder persmissions
+## Check folder persmissions
 
 `application/static/maze_files` must be `read/write`
 
