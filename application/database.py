@@ -15,8 +15,7 @@ def setup_database(database, mazes_folder, default_maze):
     cleanup_maze_storage(database.database_name, mazes_folder)
     database.setup_tables()
     maze_id = database.new_entry(default_maze.user)
-    default = RecursiveBacktracker(
-        default_maze.width, default_maze.height, maze_id)
+    default = RecursiveBacktracker(default_maze.width, default_maze.height, maze_id)
     default.output_maze()
 
 

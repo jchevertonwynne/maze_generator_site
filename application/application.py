@@ -1,9 +1,13 @@
 #!/usr/local/bin/python3
 
+from collections import namedtuple
 import sys
 
 from maze_utils import MazeSpec
 from routing import setup_app
+
+
+FileInformation = namedtuple("FileInformation", ["database_name", "mazes_folder"])
 
 
 DATABASE_NAME = "mazes.db"
@@ -16,12 +20,13 @@ DEFAULT_MAZE_HEIGHT = 40
 
 
 DEFAULT_MAZE = MazeSpec(DEFAULT_MAZE_CREATOR, DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_HEIGHT)
-
+FILE_LOCATIONS = FileInformation(DATABASE_NAME, MAZES_FOLDER)
 
 def main():
-    app = setup_app(DATABASE_NAME, MAZES_FOLDER, DEFAULT_MAZE)
+    reset = "-r" in sys.argv
+    app = setup_app(FILE_LOCATIONS, DEFAULT_MAZE, reset)
 
-    if len(sys.argv) > 1 and sys.argv[1] == "-i":
+    if "-i" in sys.argv:
         app.run(host="0.0.0.0", port=80)
     else:
         app.run()

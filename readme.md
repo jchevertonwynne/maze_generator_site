@@ -20,6 +20,8 @@ Simple little maze maker + display site
 
 `$ python3 application.py`
 
-Open to internet:
+Flags
 
-`$ python3 application.py -i`
+`-r` to reset database
+
+`-i` to open to internet. may require `sudo`

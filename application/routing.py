@@ -27,7 +27,7 @@ def build_maze(form_fields, database):
     return redirect(f'/mazes/{maze_id}')
 
 
-def setup_app(database_name, mazes_folder, default_maze):
+def setup_app(file_locations, default_maze, reset=False):
     app = Flask(__name__)
     app.config['SECRET_KEY'] = secret
 
@@ -72,8 +72,8 @@ def setup_app(database_name, mazes_folder, default_maze):
     def not_found(error):
         return render_template('error.html'), 404
 
-
-    database = MazeDatabase(database_name)
-    setup_database(database, mazes_folder, default_maze)
+    database = MazeDatabase(file_locations.database_name)
+    if reset:
+        setup_database(database, file_locations.mazes_folder, default_maze)
 
     return app
