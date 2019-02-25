@@ -135,7 +135,8 @@ class Maze(ABC):
                         width=1,
                     )
 
-        maze.save(f"static/maze_files/{self.name}.png")
+        file_name = f"static/maze_files/{self.name}.png"
+        maze.save(file_name)
 
 
 class RecursiveBacktracker(Maze):

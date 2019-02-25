@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3
 
 from collections import namedtuple
+from glob import glob
 import os
-import shutil
 import sqlite3
 
 from maze_generator import RecursiveBacktracker
@@ -23,11 +23,9 @@ def setup_database(database, mazes_folder, default_maze):
 def cleanup_maze_storage(database_name, mazes_folder):
     if os.path.isfile(database_name):
         os.remove(database_name)
-
-    if os.path.isdir(mazes_folder):
-        shutil.rmtree(mazes_folder)
-
-    os.makedirs(mazes_folder)
+    
+    for image in os.listdir(mazes_folder):
+        os.remove(f"{mazes_folder}/{image}")
 
 
 class MazeDatabase:
