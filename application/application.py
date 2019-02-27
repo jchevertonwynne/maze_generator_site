@@ -22,9 +22,10 @@ DEFAULT_MAZE_HEIGHT = 40
 DEFAULT_MAZE = MazeSpec(DEFAULT_MAZE_CREATOR, DEFAULT_MAZE_WIDTH, DEFAULT_MAZE_HEIGHT)
 FILE_LOCATIONS = FileInformation(DATABASE_NAME, MAZES_FOLDER)
 
+
 def main():
-    reset = "-r" in sys.argv
-    app = setup_app(FILE_LOCATIONS, DEFAULT_MAZE, reset)
+    reset_database = "-r" in sys.argv
+    app = setup_app(FILE_LOCATIONS, DEFAULT_MAZE, reset_database)
 
     if "-i" in sys.argv:
         app.run(host="0.0.0.0", port=80)
