@@ -14,7 +14,7 @@ Simple little maze maker + display site
 
 ## Check folder persmissions
 
-`application/static/maze_files` must be `read/write`
+`application/static/maze_files` must be `read/write` if you wish to reset the database
 
 ## Run application
 
