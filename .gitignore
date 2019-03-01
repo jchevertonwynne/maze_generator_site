@@ -1,7 +1,7 @@
+*.db
+*.png
 *.pyc
+.DS_Store
+.idea
 .vscode
 secret.py
-application/static/maze_files/*.png
-application/mazes.db
-.DS_Store
-application/.DS_Store

@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import Enum
 
-from maze_generator import RecursiveBacktracker, ParallelOption, Sidewinder
+from maze_site_app.maze_generator import RecursiveBacktracker, ParallelOption, Sidewinder
 
 
 MazeSpec = namedtuple("MazeSpec", ["user", "width", "height"])

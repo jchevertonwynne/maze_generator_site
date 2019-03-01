@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 from random import choice, randrange
 from typing import Tuple
 
-from colours import Colours, MazeColours
+from maze_site_app.colours import Colours, MazeColours
 
 
 default_colours = MazeColours(Colours.BLACK, Colours.WHITE)
@@ -59,9 +59,9 @@ class Maze(ABC):
             cell2.top = False
 
 
-    def output_maze(self):
+    def output_maze(self, folder_path):
         self.process_maze()
-        self.save_maze()
+        self.save_maze(folder_path)
 
 
     def setup_board(self):
@@ -85,7 +85,7 @@ class Maze(ABC):
         return options
 
 
-    def save_maze(self):
+    def save_maze(self, folder_path):
         maze = Image.new(
             "RGB", 
             (self.width * 2 + 1, self.height * 2 + 1), 
@@ -135,7 +135,7 @@ class Maze(ABC):
                         width=1,
                     )
 
-        file_name = f"static/maze_files/{self.name}.png"
+        file_name = f"{folder_path}/{self.name}.png"
         maze.save(file_name)
 
 

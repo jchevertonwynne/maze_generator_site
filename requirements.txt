@@ -1,4 +1,9 @@
-pillow
 flask
-wtforms
+flask-login
+flask-migrate
+flask-session
+flask-sqlalchemy
 flask-wtf
+passlib
+pillow
+wtforms
