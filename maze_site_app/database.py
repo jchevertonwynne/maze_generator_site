@@ -7,7 +7,10 @@ def get_latest_maze():
 
 
 def get_maze(maze_id):
-    return Maze.query.get(maze_id)
+    maze = Maze.query.get(maze_id)
+    if maze is None:
+        raise ValueError(f"Maze with id {maze_id} does not exist")
+    return maze
 
 
 def get_all_mazes():

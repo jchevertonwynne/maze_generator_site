@@ -10,7 +10,7 @@
     {% for maze in mazes %}
         <div class="mazeListItem">
             {% include 'fragments/mazeview.html' %}
-            <a href="mazes/{{maze.id}}">Permalink</a>
+            <a href="mazes/{{maze.maze_id}}">Permalink</a>
         </div>
     {% endfor %}
 {% endblock %}

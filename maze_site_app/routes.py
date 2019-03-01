@@ -73,8 +73,9 @@ def generate_maze():
         maze_type = form.maze_type.data
         wall_colour = form.wall_colour.data
         path_colour = form.path_colour.data
+        private = form.private.data
 
-        new_maze = add_maze(creator)
+        new_maze = add_maze(creator, private)
         maze_id = new_maze.maze_id
         maze_generation_type = MazeTypes[maze_type].value
         maze_colours = MazeColours(Colours[wall_colour], Colours[path_colour])

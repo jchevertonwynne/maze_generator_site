@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, StringField, SelectField, SubmitField
-from wtforms.widgets import PasswordInput, SubmitInput
+from wtforms.widgets import CheckboxInput, PasswordInput, SubmitInput
 from wtforms.validators import EqualTo, DataRequired, NumberRange
 
 from maze_site_app.database import user_exists
@@ -40,7 +40,8 @@ class MazeRequestForm(FlaskForm):
         validators=[]
     )
     private = BooleanField(
-        'Private'
+        'Private',
+        widget=CheckboxInput()
     )
     submit = SubmitField(
         'Generate Maze',
