@@ -16,10 +16,6 @@ Simple little maze maker + display site
 
 `$ flask db upgrade`
 
-## Check folder permissions
-
-`application/static/maze_files` must be `read/write` if you wish to reset the database
-
 ## Run application
 
 `$ flask run`
