@@ -6,22 +6,20 @@ Simple little maze maker + display site
 
 `$ pip install -r requirements.txt`
 
-## Make `secret.py`
+## Setup database
 
-`secret.py:`
+`$ export FLASK_APP=application.py`
 
-`secret = "YOUR_STRING_HERE>"`
+`$ flask db init`
 
-## Check folder persmissions
+`$ flask db migrate`
 
-`application/static/maze_files` must be `read/write`
+`$ flask db upgrade`
+
+## Check folder permissions
+
+`application/static/maze_files` must be `read/write` if you wish to reset the database
 
 ## Run application
 
-`$ python3 application.py`
-
-Flags
-
-`-r` to reset database
-
-`-i` to open to internet. may require `sudo`
+`$ flask run`
