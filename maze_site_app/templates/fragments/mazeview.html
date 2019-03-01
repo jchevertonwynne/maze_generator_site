@@ -1,5 +1,5 @@
 <div class="maze">
-    <p>Maze made by {{maze.creator}} at {{maze.date}}</p>
+    <p>Maze made by user "{{maze.creator}}" on {{maze.date_made.strftime("%d/%m/%Y") }}</p>
 
-    <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.id)) }}'>
+    <img class='latest' src='{{ url_for('static', filename="maze_files/{}.png".format(maze.maze_id)) }}'>
 </div>

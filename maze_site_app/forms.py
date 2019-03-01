@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField, SelectField, SubmitField
+from wtforms import BooleanField, IntegerField, StringField, SelectField, SubmitField
 from wtforms.widgets import PasswordInput, SubmitInput
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import EqualTo, DataRequired, NumberRange
 
+from maze_site_app.database import user_exists
 from maze_site_app.colours import Colours
 from maze_site_app.maze_utils import MazeTypes
 
@@ -17,52 +18,92 @@ maze_options = list(zip(maze_strings_backend, maze_strings_display))
 
 
 class MazeRequestForm(FlaskForm):
-    width = IntegerField('Width', validators=[NumberRange(min=10, max=200)])
-    height = IntegerField('Height', validators=[NumberRange(min=10, max=200)])
-    creator = StringField("Creator", validators=[DataRequired(message="Please enter your name")])
-    maze_type = SelectField("Maze type", choices=maze_options, validators=[])
-    wall_colour = SelectField("Wall colour", choices=colour_options, validators=[])
-    path_colour = SelectField("Path colour", choices=colour_options, validators=[])
-    submit = SubmitField('Generate Maze', widget=SubmitInput())
+    width = IntegerField(
+        'Width',
+        validators=[NumberRange(min=10, max=200)]
+    )
+    height = IntegerField(
+        'Height',
+        validators=[NumberRange(min=10, max=200)]
+    )
+    maze_type = SelectField(
+        'Maze type',
+        choices=maze_options, validators=[]
+    )
+    wall_colour = SelectField(
+        'Wall colour',
+        choices=colour_options, validators=[]
+    )
+    path_colour = SelectField(
+        'Path colour',
+        choices=colour_options,
+        validators=[]
+    )
+    private = BooleanField(
+        'Private'
+    )
+    submit = SubmitField(
+        'Generate Maze',
+        widget=SubmitInput()
+    )
 
     def validate(self):
         if not super().validate():
             return False
         result = True
         if self.wall_colour.data == self.path_colour.data:
-            self.wall_colour.errors.append("Wall and path colours must be different")
-            self.path_colour.errors.append("Wall and path colours must be different")
+            self.wall_colour.errors.append('Wall and path colours must be different')
+            self.path_colour.errors.append('Wall and path colours must be different')
             result = False
         return result
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired()])
-    password = StringField("Password", validators=[DataRequired()], widget=PasswordInput())
-    submit = SubmitField('Login', widget=SubmitInput())
+    username = StringField(
+        'Username', 
+        validators=[DataRequired()]
+    )
+    password = StringField(
+        'Password', 
+        validators=[DataRequired()], 
+        widget=PasswordInput()
+    )
+    submit = SubmitField(
+        'Login', 
+        widget=SubmitInput())
 
 
 class CreateUserForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired()])
-    password = StringField("Password", validators=[DataRequired()], widget=PasswordInput())
-    password_double_check = StringField("Password", validators=[DataRequired()], widget=PasswordInput())
-    submit = SubmitField('Create Account', widget=SubmitInput())
-
-    def __init__(self, database, **kwargs):
-        super().__init__(**kwargs)
-        self.database = database
+    username = StringField(
+        'Username', 
+        validators=[DataRequired()]
+    )
+    password = StringField(
+        'Password', 
+        validators=[DataRequired()], 
+        widget=PasswordInput()
+    )
+    password_double_check = StringField(
+        'Password', 
+        validators=[DataRequired(), EqualTo('password')], 
+        widget=PasswordInput()
+    )
+    submit = SubmitField(
+        'Create Account', 
+        widget=SubmitInput()
+    )
     
     def validate(self):
-        print("validating")
+        print('validating')
         print(self.username.data)
         if not super().validate():
             return False
         result = True
-        if self.database.user_exists(self.username.data):
-            self.username.errors.append("This username is already taken")
+        if user_exists(self.username.data):
+            self.username.errors.append('This username is already taken')
             result = False
         if self.password.data != self.password_double_check.data:
-            self.password.errors.append("Passwords must be identical")
-            self.password_double_check.errors.append("Passwords must be identical")
+            self.password.errors.append('Passwords must be identical')
+            self.password_double_check.errors.append('Passwords must be identical')
             result = False
         return result

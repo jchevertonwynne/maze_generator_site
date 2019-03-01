@@ -1,13 +1,15 @@
-from flask import Flask, make_response, render_template, redirect, request, session
-from flask_login import login_manager
+from flask import Flask
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+from config import Config
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "lmao i am secret"
+app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+login = LoginManager(app)
+login.login_view = '/login'
 
-from maze_site_app.routes import routes
-
-git s
+from maze_site_app import models, routes
