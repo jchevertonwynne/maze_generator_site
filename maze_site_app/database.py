@@ -1,20 +1,37 @@
+from flask_login import current_user
+from sqlalchemy import or_
+
 from maze_site_app import db
 from maze_site_app.models import Maze, User
 
 
-def get_latest_maze():
-    return Maze.query.order_by(Maze.maze_id.desc()).first()
+def get_latest_maze(username=None):
+    if username is None:
+        return Maze.query.filter(Maze.private == False)\
+                         .order_by(Maze.maze_id.desc())\
+                         .first()
+    return Maze.query.filter(or_(Maze.private == False, User.username == username))\
+                     .order_by(Maze.maze_id.desc())\
+                     .first()
 
 
 def get_maze(maze_id):
     maze = Maze.query.get(maze_id)
     if maze is None:
         raise ValueError(f"Maze with id {maze_id} does not exist")
+    if maze.private and maze.creator != current_user.username:
+        raise ValueError("Maze is private and belongs to another user")
     return maze
 
 
-def get_all_mazes():
-    return Maze.query.order_by(Maze.maze_id.desc()).all()
+def get_all_mazes(username=None):
+    if username is None:
+        return Maze.query.filter(Maze.private == False)\
+                         .order_by(Maze.maze_id.desc())\
+                         .all()
+    return Maze.query.filter(or_(Maze.private == False, Maze.creator == username))\
+                     .order_by(Maze.maze_id.desc())\
+                     .all()
 
 
 def add_maze(creator, private=False):

@@ -1,13 +1,16 @@
 <div class='navbar'>
     <ul>
         <a href="/"> <li> Home </li> </a>
-        <a href="/generate_maze"> <li> Create a maze </li> </a>
         <a href="/mazes"> <li> View all mazes </li> </a>
+
         {%  if current_user.is_authenticated %}
+            <a href="/generate_maze"> <li> Create a maze </li> </a>
             <a href="/logout"> <li> Logout </li></a>
-        {%  else %}
+        {% else %}
+            <a href="/create_account"> <li> Create account </li> </a>
             <a href="/login"> <li> Login </li></a>
         {% endif %}
+
         <a href="https://github.com/jchevertonwynne/maze_generator_site" target="_blank"> <li> View on github </li> </a>
     </ul>
 </div>

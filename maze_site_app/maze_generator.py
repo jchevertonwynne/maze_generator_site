@@ -20,7 +20,6 @@ class Tile:
     top: bool = True
     right: bool = True
 
-
     def __hash__(self):
         return hash(self.pos)
     
@@ -37,12 +36,10 @@ class Maze(ABC):
         self.name = name
         self.colours = colours
         self._board = self.setup_board()
-    
-    
+
     @abstractmethod
     def process_maze(self):
         pass
-
 
     @staticmethod
     def connect_cells(cell1, cell2):
@@ -58,18 +55,16 @@ class Maze(ABC):
         elif next_y > curr_y:
             cell2.top = False
 
-
     def output_maze(self, folder_path):
         self.process_maze()
         self.save_maze(folder_path)
 
-
     def setup_board(self):
-        board = [[Tile((x, y)) for x in range(self.width)] 
-                             for y in range(self.height)]
+        board = [[Tile((x, y))
+                  for x in range(self.width)]
+                 for y in range(self.height)]
         board[0][0].top = False
         return board
-    
 
     def get_adjacent_tiles(self, tile):
         x, y = tile.pos
@@ -84,7 +79,6 @@ class Maze(ABC):
             options.append(self._board[y + 1][x])
         return options
 
-
     def save_maze(self, folder_path):
         maze = Image.new(
             "RGB", 
@@ -96,9 +90,9 @@ class Maze(ABC):
         # bottom wall
         draw.line(
             (0,
-            (self.height * 2),
-            ((self.width - 1) * 2), 
-            (self.height * 2)),
+             (self.height * 2),
+             ((self.width - 1) * 2),
+             (self.height * 2)),
             fill=self.colours.wall_colour.value,
             width=1,
         )
@@ -106,9 +100,9 @@ class Maze(ABC):
         # left wall
         draw.line(
             (0, 
-            0, 
-            0, 
-            self.height * 2), 
+             0,
+             0,
+             self.height * 2),
             fill=self.colours.wall_colour.value,
             width=1
         )
@@ -119,18 +113,18 @@ class Maze(ABC):
                 if cell.top:
                     draw.line(
                         ((x * 2),
-                        (y * 2),
-                        (x * 2) + 2,
-                        (y * 2)), 
+                         (y * 2),
+                         (x * 2) + 2,
+                         (y * 2)),
                         fill=self.colours.wall_colour.value,
                         width=1
                     )
                 if cell.right:
                     draw.line(
                         ((x * 2) + 2,
-                        (y * 2),
-                        (x * 2) + 2,
-                        (y * 2) + 2),
+                         (y * 2),
+                         (x * 2) + 2,
+                         (y * 2) + 2),
                         fill=self.colours.wall_colour.value,
                         width=1,
                     )
@@ -149,7 +143,7 @@ class RecursiveBacktracker(Maze):
         while stack:
             curr_tile = stack[-1]
             possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
-                                if adjacent not in visited]
+                             if adjacent not in visited]
 
             if possible_next:
                 next_tile = choice(possible_next)
@@ -173,7 +167,7 @@ class ParallelOption(Maze):
         while options:
             curr_tile = choice(list(options))
             possible_next = [adjacent for adjacent in adjacent_tiles[curr_tile]
-                            if adjacent not in visited]
+                             if adjacent not in visited]
 
             if possible_next:
                 next_tile = choice(list(possible_next))
@@ -209,4 +203,3 @@ class Sidewinder(Maze):
                     above_cell = self._board[up_y - 1][up_x]
                     self.connect_cells(up_from_cell, above_cell)
                     ran = []
-    
