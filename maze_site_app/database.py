@@ -5,14 +5,15 @@ from maze_site_app import db
 from maze_site_app.models import Maze, User
 
 
-def get_latest_maze(username=None):
-    if username is None:
-        return Maze.query.filter(Maze.private == False)\
+def get_latest_maze():
+    if current_user.is_authenticated:
+        return Maze.query.filter(or_(Maze.private.is_(False), Maze.creator == current_user.username)) \
+            .order_by(Maze.maze_id.desc()) \
+            .first()
+    else:
+        return Maze.query.filter(Maze.private.is_(False))\
                          .order_by(Maze.maze_id.desc())\
                          .first()
-    return Maze.query.filter(or_(Maze.private == False, User.username == username))\
-                     .order_by(Maze.maze_id.desc())\
-                     .first()
 
 
 def get_maze(maze_id):
@@ -24,14 +25,15 @@ def get_maze(maze_id):
     return maze
 
 
-def get_all_mazes(username=None):
-    if username is None:
-        return Maze.query.filter(Maze.private == False)\
+def get_all_mazes():
+    if current_user.is_authenticated:
+        return Maze.query.filter(or_(Maze.private.is_(False), Maze.creator == current_user.username)) \
+            .order_by(Maze.maze_id.desc()) \
+            .all()
+    else:
+        return Maze.query.filter(Maze.private.is_(False))\
                          .order_by(Maze.maze_id.desc())\
                          .all()
-    return Maze.query.filter(or_(Maze.private == False, Maze.creator == username))\
-                     .order_by(Maze.maze_id.desc())\
-                     .all()
 
 
 def add_maze(creator, private=False):
@@ -39,6 +41,13 @@ def add_maze(creator, private=False):
     db.session.add(new_maze)
     db.session.commit()
     return new_maze
+
+
+def user_has_access(maze_id):
+    if not current_user.is_authenticated:
+        return False
+    maze = get_maze(maze_id)
+    return not maze.private or maze.creator == current_user.username
 
 
 def user_exists(username):

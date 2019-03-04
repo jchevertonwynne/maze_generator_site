@@ -1,8 +1,8 @@
-from flask import make_response, render_template, redirect, request, session
+from flask import make_response, render_template, redirect, request, send_from_directory
 from flask_login import current_user, login_required, login_user, logout_user
 
 from maze_site_app import app
-from maze_site_app.database import get_latest_maze, get_all_mazes, get_maze, add_maze, add_user, user_login
+from maze_site_app.database import get_latest_maze, get_all_mazes, get_maze, add_maze, add_user, user_has_access, user_login
 from maze_site_app.colours import Colours, MazeColours
 from maze_site_app.maze_utils import MazeTypes
 from maze_site_app.forms import CreateUserForm, LoginForm, MazeRequestForm
@@ -11,7 +11,7 @@ from maze_site_app.forms import CreateUserForm, LoginForm, MazeRequestForm
 def create_default_maze():
     default_maze = add_maze("default")
     maze = MazeTypes.PARALLEL.value(name=default_maze.maze_id)
-    maze.output_maze("maze_site_app/static/maze_files")
+    maze.output_maze("maze_site_app/protected/maze_files")
     return default_maze
 
 
@@ -29,7 +29,7 @@ def generate_maze(form):
     maze_generation_type = MazeTypes[maze_type].value
     maze_colours = MazeColours(Colours[wall_colour], Colours[path_colour])
     user_maze = maze_generation_type(width, height, maze_id, maze_colours)
-    user_maze.output_maze('maze_site_app/static/maze_files')
+    user_maze.output_maze('maze_site_app/protected/maze_files')
     return redirect(f'/mazes/{maze_id}')
 
 
@@ -48,11 +48,19 @@ def login(form):
     if login_attempt:
         login_user(login_attempt)
         next_page = request.args.get('next')
-        if not next_page:
-            next_page = redirect('/')
+        print(next_page)
+        if next_page is None:
+            return redirect('/')
         return redirect(next_page)
     else:
         return render_template('login.html', form=form)
+
+
+def serve_maze(maze_id):
+    if user_has_access(maze_id):
+        return send_from_directory('protected/maze_files', f'{maze_id}.png')
+    else:
+        raise ValueError('Access to maze not permitted')
 
 
 @app.route('/')
@@ -101,10 +109,7 @@ def generate_maze_route():
 
 @app.route('/mazes')
 def maze_list_route():
-    if current_user.is_authenticated:
-        mazes = get_all_mazes(current_user.username)
-    else:
-        mazes = get_all_mazes()
+    mazes = get_all_mazes()
     return render_template('viewmazes.html', mazes=mazes)
 
 
@@ -113,6 +118,16 @@ def view_maze_route(maze_id):
     try:
         maze = get_maze(maze_id)
         return render_template('viewmaze.html', maze=maze)
+    except ValueError:
+        response = make_response(redirect('/'))
+        response.set_cookie('issue', f'Maze with Id {maze_id} could not be found')
+        return response
+
+
+@app.route('/protected/<int:maze_id>')
+def serve_image_route(maze_id):
+    try:
+        return serve_maze(maze_id)
     except ValueError:
         response = make_response(redirect('/'))
         response.set_cookie('issue', f'Maze with Id {maze_id} could not be found')
