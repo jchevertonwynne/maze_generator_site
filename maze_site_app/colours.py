@@ -4,6 +4,7 @@ from enum import Enum
 
 MazeColours = namedtuple("MazeColours", ["wall_colour", "path_colour"])
 
+
 class Colours(Enum):
     BLACK = (0, 0, 0)
     BLUE = (0, 0, 255)

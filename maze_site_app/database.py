@@ -8,8 +8,8 @@ from maze_site_app.models import Maze, User
 def get_latest_maze():
     if current_user.is_authenticated:
         return Maze.query.filter(or_(Maze.private.is_(False), Maze.creator == current_user.username)) \
-            .order_by(Maze.maze_id.desc()) \
-            .first()
+                         .order_by(Maze.maze_id.desc()) \
+                         .first()
     else:
         return Maze.query.filter(Maze.private.is_(False))\
                          .order_by(Maze.maze_id.desc())\
