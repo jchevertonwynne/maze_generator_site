@@ -1,5 +1,13 @@
-<div class="maze">
-    <p>Maze made by user "{{maze.creator}}" on {{maze.date_made.strftime("%d/%m/%Y") }}</p>
+<div class="maze {{ 'private' if maze.private }}" >
+    <p>Maze made by user "{{maze.creator}}" on {{maze.date_made.strftime("%d/%m/%Y") }} </p>
 
-    <img class='latest' src='{{ 'protected/{}'.format(maze.maze_id) }}'>
+    {% if maze.creator == current_user.username %}
+        {%  if maze.private %}
+            <p> Make public </p>
+        {% else %}
+            <p> Make private </p>
+        {% endif %}
+    {% endif %}
+
+    <img class='latest' src='{{ '/protected/{}'.format(maze.maze_id) }}'>
 </div>

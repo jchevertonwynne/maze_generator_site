@@ -21,7 +21,7 @@ body {
 .navbar a {
     width: 20%;
     margin: 5px;
-    padding: 0px 5px 0px 5px;
+    padding: 0 5px 0 5px;
 }
 
 .navbar li {
@@ -56,4 +56,8 @@ li:hover {
     color: gold;
     padding: 10px;
     margin-top: 10px;
+}
+
+.private {
+    background-color: chocolate;
 }
