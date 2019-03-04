@@ -20,6 +20,6 @@ Simple little maze maker + display site
 
 `$ flask run`
 
-# Open to internet
+### Open to internet
 
-`$ sudo python3 flask run --host=0.0.0.0 --port=80
+`$ sudo python3 flask run --host=0.0.0.0 --port=80`
