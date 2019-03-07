@@ -55,9 +55,9 @@ class Maze(ABC):
         elif next_y > curr_y:
             cell2.top = False
 
-    def output_maze(self, folder_path):
+    def output_maze(self):
         self.process_maze()
-        self.save_maze(folder_path)
+        self.save_maze("maze_site_app/protected/maze_files")
 
     def setup_board(self):
         board = [[Tile((x, y))

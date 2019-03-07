@@ -6,7 +6,6 @@ from pathlib import Path
 
 from config import Config
 
-
 app = Flask(__name__, instance_path=str(Path('maze_site_app/protected').absolute()))
 app.config.from_object(Config)
 db = SQLAlchemy(app)

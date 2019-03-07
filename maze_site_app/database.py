@@ -1,5 +1,4 @@
 from flask_login import current_user
-from sqlalchemy import or_
 
 from maze_site_app import db
 from maze_site_app.models import Maze, User
@@ -7,12 +6,12 @@ from maze_site_app.models import Maze, User
 
 def get_latest_maze():
     if current_user.is_authenticated:
-        return Maze.query.filter(or_(Maze.private.is_(False), Maze.creator == current_user.username)) \
+        return Maze.query.filter(Maze.private.is_(False) | (Maze.creator == current_user.username)) \
                          .order_by(Maze.maze_id.desc()) \
                          .first()
     else:
-        return Maze.query.filter(Maze.private.is_(False))\
-                         .order_by(Maze.maze_id.desc())\
+        return Maze.query.filter(Maze.private.is_(False)) \
+                         .order_by(Maze.maze_id.desc()) \
                          .first()
 
 
@@ -27,12 +26,12 @@ def get_maze(maze_id):
 
 def get_all_mazes():
     if current_user.is_authenticated:
-        return Maze.query.filter(or_(Maze.private.is_(False), Maze.creator == current_user.username)) \
+        return Maze.query.filter(Maze.private.is_(False) | (Maze.creator == current_user.username)) \
             .order_by(Maze.maze_id.desc()) \
             .all()
     else:
-        return Maze.query.filter(Maze.private.is_(False))\
-                         .order_by(Maze.maze_id.desc())\
+        return Maze.query.filter(Maze.private.is_(False)) \
+                         .order_by(Maze.maze_id.desc()) \
                          .all()
 
 
@@ -44,10 +43,8 @@ def add_maze(creator, private=False):
 
 
 def user_has_access(maze_id):
-    if not current_user.is_authenticated:
-        return False
     maze = get_maze(maze_id)
-    return not maze.private or maze.creator == current_user.username
+    return not maze.private or (current_user.is_authenticated and (maze.creator == current_user.username))
 
 
 def user_exists(username):
@@ -67,4 +64,4 @@ def user_login(username, password):
         db_user = User.query.get(username)
         if db_user.check_password(password):
             return db_user
-    return False
+    raise ValueError("Incorrect username or password")

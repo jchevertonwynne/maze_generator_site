@@ -1,5 +1,5 @@
 <div class="maze {{ 'private' if maze.private }}" >
-    <p>Maze made by user "{{maze.creator}}" on {{maze.date_made.strftime("%d/%m/%Y") }} </p>
+    <p> Maze made by user "{{maze.creator}}" on {{maze.date_made.strftime("%d/%m/%Y") }} </p>
 
     {% if maze.creator == current_user.username %}
         {%  if maze.private %}

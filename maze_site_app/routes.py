@@ -11,14 +11,14 @@ from maze_site_app.forms import CreateUserForm, LoginForm, MazeRequestForm
 def create_default_maze():
     default_maze = add_maze("default")
     maze = MazeTypes.PARALLEL.value(name=default_maze.maze_id)
-    maze.output_maze("maze_site_app/protected/maze_files")
+    maze.output_maze()
     return default_maze
 
 
 def generate_maze(form):
+    creator = current_user.username
     width = form.width.data
     height = form.height.data
-    creator = current_user.username
     maze_type = form.maze_type.data
     wall_colour = form.wall_colour.data
     path_colour = form.path_colour.data
@@ -44,15 +44,13 @@ def create_account(form):
 def login(form):
     username = form.username.data
     password = form.password.data
-    login_attempt = user_login(username, password)
-    if login_attempt:
-        login_user(login_attempt)
+    try:
+        login_user(user_login(username, password))
         next_page = request.args.get('next')
-        print(next_page)
         if next_page is None:
             return redirect('/')
         return redirect(next_page)
-    else:
+    except ValueError:
         return render_template('login.html', form=form)
 
 
