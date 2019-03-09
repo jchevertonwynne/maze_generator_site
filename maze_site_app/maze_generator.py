@@ -2,9 +2,12 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from PIL import Image, ImageDraw
 from random import choice, randrange
-from typing import Tuple
+from typing import Tuple, List
 
 from maze_site_app.colours import Colours, MazeColours
+
+
+GameBoard = List[List['Tile']]
 
 
 default_colours = MazeColours(Colours.BLACK, Colours.WHITE)
@@ -30,7 +33,11 @@ class Maze(ABC):
     name: The file name output. Do not include file extension.
     width, height: Self explanatory. Both default to 200."""
 
-    def __init__(self, width=200, height=200, name="default", colours=default_colours):
+    def __init__(self,
+                 width: int = 200,
+                 height: int = 200,
+                 name: str = "default",
+                 colours: MazeColours = default_colours):
         self.width = width
         self.height = height
         self.name = name
@@ -42,7 +49,7 @@ class Maze(ABC):
         pass
 
     @staticmethod
-    def connect_cells(cell1, cell2):
+    def connect_cells(cell1: Tile, cell2: Tile):
         curr_x, curr_y = cell1.pos
         next_x, next_y = cell2.pos
 
@@ -57,16 +64,16 @@ class Maze(ABC):
 
     def output_maze(self):
         self.process_maze()
-        self.save_maze("maze_site_app/protected/maze_files")
+        self.save_maze()
 
-    def setup_board(self):
+    def setup_board(self) -> GameBoard:
         board = [[Tile((x, y))
                   for x in range(self.width)]
                  for y in range(self.height)]
         board[0][0].top = False
         return board
 
-    def get_adjacent_tiles(self, tile):
+    def get_adjacent_tiles(self, tile: Tile):
         x, y = tile.pos
         options = []
         if x > 0:
@@ -79,7 +86,7 @@ class Maze(ABC):
             options.append(self._board[y + 1][x])
         return options
 
-    def save_maze(self, folder_path):
+    def save_maze(self):
         maze = Image.new(
             "RGB", 
             (self.width * 2 + 1, self.height * 2 + 1), 
@@ -129,7 +136,7 @@ class Maze(ABC):
                         width=1,
                     )
 
-        file_name = f"{folder_path}/{self.name}.png"
+        file_name = f"maze_site_app/protected/maze_files/{self.name}.png"
         maze.save(file_name)
 
 

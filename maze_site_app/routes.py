@@ -29,7 +29,7 @@ def generate_maze(form):
     maze_generation_type = MazeTypes[maze_type].value
     maze_colours = MazeColours(Colours[wall_colour], Colours[path_colour])
     user_maze = maze_generation_type(width, height, maze_id, maze_colours)
-    user_maze.output_maze('maze_site_app/protected/maze_files')
+    user_maze.output_maze()
     return redirect(f'/mazes/{maze_id}')
 
 

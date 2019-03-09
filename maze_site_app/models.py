@@ -13,14 +13,14 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"User: {self.username}"
 
-    def get_id(self):
+    def get_id(self) -> str:
         return self.username
 
-    def set_password(self, password):
+    def set_password(self, password: str):
         hashed_password = pbkdf2_sha256.hash(password, rounds=200000, salt_size=16)
         self.password = hashed_password
 
-    def check_password(self, password):
+    def check_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password)
 
 
@@ -30,10 +30,10 @@ class Maze(db.Model):
     creator = db.Column(db.String, db.ForeignKey('user.username'))
     private = db.Column(db.Boolean, nullable=False)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Maze #{self.maze_id}"
 
 
 @login.user_loader
-def load_user(username):
+def load_user(username: str) -> User:
     return User.query.get(username)

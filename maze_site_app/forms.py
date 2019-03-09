@@ -48,7 +48,7 @@ class MazeRequestForm(FlaskForm):
         widget=SubmitInput()
     )
 
-    def validate(self):
+    def validate(self) -> bool:
         if not super().validate():
             return False
         result = True
@@ -94,7 +94,7 @@ class CreateUserForm(FlaskForm):
         widget=SubmitInput()
     )
     
-    def validate(self):
+    def validate(self) -> bool:
         print('validating')
         print(self.username.data)
         if not super().validate():
