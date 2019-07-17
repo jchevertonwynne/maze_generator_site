@@ -10,6 +10,11 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(128), nullable=False)
     mazes = db.relationship('Maze', backref='maze_list', lazy=True)
 
+    def __init__(self, username, password):
+        super().__init__()
+        self.username = username
+        self.set_password(password)
+
     def __repr__(self):
         return f"User: {self.username}"
 

@@ -8,12 +8,12 @@ from maze_site_app.models import Maze, User
 def get_latest_maze() -> List[Maze]:
     if current_user.is_authenticated:
         return Maze.query.filter(Maze.private.is_(False) | (Maze.creator == current_user.username)) \
-                         .order_by(Maze.maze_id.desc()) \
-                         .first()
+                .order_by(Maze.maze_id.desc()) \
+                .first()
     else:
         return Maze.query.filter(Maze.private.is_(False)) \
-                         .order_by(Maze.maze_id.desc()) \
-                         .first()
+                .order_by(Maze.maze_id.desc()) \
+                .first()
 
 
 def get_maze(maze_id: int) -> Maze:
@@ -28,12 +28,12 @@ def get_maze(maze_id: int) -> Maze:
 def get_all_mazes() -> List[Maze]:
     if current_user.is_authenticated:
         return Maze.query.filter(Maze.private.is_(False) | (Maze.creator == current_user.username)) \
-            .order_by(Maze.maze_id.desc()) \
-            .all()
+                .order_by(Maze.maze_id.desc()) \
+                .all()
     else:
         return Maze.query.filter(Maze.private.is_(False)) \
-                         .order_by(Maze.maze_id.desc()) \
-                         .all()
+                .order_by(Maze.maze_id.desc()) \
+                .all()
 
 
 def add_maze(creator: str, private: bool = False) -> Maze:
@@ -53,8 +53,7 @@ def user_exists(username: str) -> bool:
 
 
 def add_user(username: str, password: str) -> User:
-    new_user = User(username=username)
-    new_user.set_password(password)
+    new_user = User(username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
     return new_user
